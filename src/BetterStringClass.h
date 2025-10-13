@@ -1,3 +1,5 @@
+/*! CPP Libraries v1.0 | (c) 2025 Jessica Davies | https://github.com/jessicadavies2003/C-Plus-Plus-Libraries/blob/main/LICENSE */
+
 #ifndef key1
 #define key1
 
