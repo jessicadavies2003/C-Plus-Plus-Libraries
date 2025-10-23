@@ -7,5 +7,5 @@ I've complied a handful of C++ classes for many issues you may face in your codi
 
 ...and many more!
 
-# Is any credit required?
-It's not mandatory, but I would be grateful if you did!
+## Creator's Portfolio
+https://jessicadavies2003.github.io/
