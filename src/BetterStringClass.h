@@ -154,14 +154,14 @@ public:
 
 	// checks if a string contains digits
 	bool hasDigits() {
-		vector<char> digits = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' };
-		for (char digit : digits) {
-			if (s.find(digit)) {
-				return true;
-			}
-		}
-		return false;
-	}
+        vector<string> digits = { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9" };
+        for (string digit : digits) {
+            if (s.find(digit) != -1) {
+                return true;
+            }
+        }
+        return false;
+    }
 };
 
 #endif
