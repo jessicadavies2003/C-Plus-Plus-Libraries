@@ -1,5 +1,3 @@
-/*! CPP Libraries v1.0 | (c) 2025 Jessica Davies | https://github.com/jessicadavies2003/C-Plus-Plus-Libraries/blob/main/LICENSE */
-
 #ifndef key1
 #define key1
 
@@ -14,7 +12,7 @@ private:
 
 public:
 	int length;
-	BetterString(string str) {
+	BetterString(string str = "") {
 		s = str;
 		length = s.size();
 	}
@@ -109,6 +107,7 @@ public:
 		return result;
 	}
 
+	// counts the number of character occurences in a string/
 	int countOccurence(char c) {
 		int result = 0;
 		for (int i = 0; i < s.size(); i++) {
@@ -119,14 +118,50 @@ public:
 		return result;
 	}
 
+	// checks if the string ends with the given substring
 	bool endsWith(string ending) {
 		int endingLen = ending.size();
 		string snippedStr = this->subString((s.size() - endingLen), s.size(), false);
-		cout << snippedStr << " - for debugging" << endl;
 		return snippedStr == ending;
 	}
 
+	// fills a string with the given value
+	void fill(char c, int length) {
+		for (int i = 0; i < length; i++) {
+			s = s + c;
+		}
+	}
 
+	// outputs the string
+	void print(bool endLine = false) {
+		if (endLine) {
+			cout << s << endl;
+		} else  {
+			cout << s;
+		}
+	}
+
+	// checks if the string has whitespace
+	bool hasWhitespace() {
+		for (int i = 0; i < s.size(); i++) {
+			cout << s[i] << endl;
+			if (s[i] == ' ') {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	// checks if a string contains digits
+	bool hasDigits() {
+		vector<char> digits = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' };
+		for (char digit : digits) {
+			if (s.find(digit)) {
+				return true;
+			}
+		}
+		return false;
+	}
 };
 
 #endif
