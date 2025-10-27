@@ -130,15 +130,34 @@ public:
 			binaryStuff += int2Binary(char2ASCII(current));
 		}
 
-		vector<string> splitBinary = splitStringByIndex(binaryStuff, 6);
+		int numEach = 6;
+		vector<string> splitBinary = splitStringByIndex(binaryStuff, numEach);
 		for (string each : splitBinary) {
-			if (each.size() != 6) {
-				string newEach = repeatUntilAmount(each, '0', 6);
+			if (each.size() < numEach) {
+				string newEach = repeatUntilAmount(each, '0', numEach);
 				result += ascii2Char(bin2Int(newEach));
-				result += repeatStr('=', each.size() / 4);
+				result += repeatStr('=', (numEach - each.size())/2);
 			}
 			else {
 				result += ascii2Char(bin2Int(each));
+			}
+		}
+
+		return result;
+	}
+
+	// TODO: finish
+	string base64Decode(string encoded) {
+		string result;
+		string binaryStuff;
+
+		for (int i = 0; i < encoded.size(); i++) {
+			char current = (char)encoded[i];
+			if (current == '=') {
+
+			}
+			else {
+				binaryStuff += int2Binary(char2ASCII(current));
 			}
 		}
 
