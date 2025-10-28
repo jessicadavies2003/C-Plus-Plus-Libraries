@@ -1,6 +1,3 @@
-#ifndef key1
-#define key1
-
 #include <vector>
 #include <string>
 #include <cmath>
@@ -164,5 +161,3 @@ public:
 		return result;
 	}
 };
-
-#endif
