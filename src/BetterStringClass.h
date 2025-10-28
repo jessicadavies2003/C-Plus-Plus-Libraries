@@ -1,6 +1,3 @@
-#ifndef key1
-#define key1
-
 #include <string>
 #include <vector>
 using namespace std;
@@ -163,5 +160,3 @@ public:
         return false;
     }
 };
-
-#endif
