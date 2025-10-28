@@ -1,6 +1,3 @@
-#ifndef key2
-#define key2
-
 #include <string>
 #include <vector>
 using namespace std;
@@ -75,5 +72,3 @@ public:
 		values.erase(values.end());
 	}
 };
-
-#endif
