@@ -1,3 +1,5 @@
+#pragma once
+
 #include <string>
 #include <vector>
 using namespace std;
@@ -133,7 +135,8 @@ public:
 	void print(bool endLine = false) {
 		if (endLine) {
 			cout << s << endl;
-		} else  {
+		}
+		else {
 			cout << s;
 		}
 	}
@@ -151,12 +154,65 @@ public:
 
 	// checks if a string contains digits
 	bool hasDigits() {
-        vector<string> digits = { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9" };
-        for (string digit : digits) {
-            if (s.find(digit) != -1) {
-                return true;
-            }
+		vector<string> digits = { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9" };
+		for (string digit : digits) {
+			if (s.find(digit) != -1) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	// splits a string at every given index and returns a vector. Adds anything left over.
+	vector<string> splitStringByIndex(int idx) {
+		int currIdx = 0;
+		vector<string> result;
+
+		while (currIdx < s.size()) {
+			if (currIdx + idx > s.size()) {
+				result.push_back(subString(currIdx, s.size()));
+				break;
+			}
+
+			result.push_back(subString(currIdx, currIdx + idx));
+			currIdx += idx;
+		}
+		return result;
+	}
+
+	// Adds char `a` until the length of the string reaches `len`.
+	string repeatUntilAmount(char a, int len) {
+		string result = s;
+		while (result.size() != len) {
+			result += a;
+		}
+		return result;
+	}
+
+    /// finds a given substring in the string, or an empty vector if not found.
+    vector<int> findSubStrings(string sub) {
+        vector<int> allOccurences;
+        string temp = s;
+
+        while (temp.find(sub) != -1) {
+            int idx = temp.find(sub);
+            allOccurences.push_back(temp.find(sub));
+            temp.erase(idx, sub.size());
         }
-        return false;
+
+        return allOccurences;
+    }
+
+    // replaces a substring with a new substring.
+    string replaceSubstr(string oldSubStr, string newSubStr) {
+        vector<int> allOccurences = findSubStrings(s, oldSubStr);
+        string result = s;
+        int len = oldSubStr.size();
+
+        for (int index : allOccurences) {
+            result.replace(index, len, newSubStr);
+        }
+
+        return result;
     }
 };
