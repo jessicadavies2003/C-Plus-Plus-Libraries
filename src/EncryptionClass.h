@@ -8,7 +8,6 @@ private:
 	vector<char> char2ASCIILookup = { ' ', '!', '"', '#', '$', ' ', '%', ' ', '&', '\'', '(', ')', '*', '+', ',', '-', '.', '/', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', ':', ';', '<', '?', '@', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '[', ']', '^', '_', '`', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '{', '|', '}', '~', };
 	vector<char> base64alphabet = { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '+', '/' };
 	vector<int> nums = { (int)pow(2, 7) , (int)pow(2, 6), (int)pow(2, 5), (int)pow(2, 4), (int)pow(2, 3), (int)pow(2, 2), (int)pow(2, 1), (int)pow(2, 0) };
-	// backspace copy paste '\'
 
 	// converts a character into its ASCII code equivalent.
 	int char2ASCII(char a) {
@@ -118,7 +117,7 @@ public:
 		return result;
 	}
 
-	string base64Encode(string s) {
+	string base64Encode(string s, int key = 0) {
 		string result;
 		string binaryStuff;
 
@@ -132,32 +131,19 @@ public:
 		for (string each : splitBinary) {
 			if (each.size() < numEach) {
 				string newEach = repeatUntilAmount(each, '0', numEach);
-				result += ascii2Char(bin2Int(newEach));
+				result += ascii2Char(bin2Int(newEach) + key);
 				result += repeatStr('=', (numEach - each.size())/2);
 			}
 			else {
-				result += ascii2Char(bin2Int(each));
+				result += ascii2Char(bin2Int(each) + key);
 			}
 		}
 
 		return result;
 	}
 
-	// TODO: finish
-	string base64Decode(string encoded) {
+	string base64Decode(string s, int key = 0) {
 		string result;
-		string binaryStuff;
-
-		for (int i = 0; i < encoded.size(); i++) {
-			char current = (char)encoded[i];
-			if (current == '=') {
-
-			}
-			else {
-				binaryStuff += int2Binary(char2ASCII(current));
-			}
-		}
-
 		return result;
 	}
 };
