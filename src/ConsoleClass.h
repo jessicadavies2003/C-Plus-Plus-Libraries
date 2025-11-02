@@ -3,6 +3,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <cmath>
 
 // a C++ class for styling text in a console.
 class Console {
@@ -35,25 +36,6 @@ private:
         return result;
     }
 
-    int colour2Num(std::string colour, bool isBackground = false) {
-        bool bright = colour.find("bright") != -1;
-        int foundIdx = findColour(replaceSubstr(colour, "bright ", ""), colours);
-        int result = 0;
-
-        if ((bright) && (foundIdx != -1)) {
-            result = foundIdx + 90;
-        }
-        else if (!(bright) && (foundIdx != -1)) {
-            result = foundIdx + 30;
-        }
-
-        if (isBackground) {
-            result += 10;
-        }
-
-        return result;
-    }
-
     int findColour(std::string c, std::vector<std::string> arr) {
         for (int i = 0; i < arr.size(); i++) {
             if (c == arr[i]) {
@@ -80,6 +62,35 @@ private:
         return -1;
     }
 
+    std::string subString(std::string s, int startIdx, int endIdx, bool makeLower = true) {
+        std::string result;
+        for (int i = startIdx; i < endIdx; i++) {
+            if (makeLower) {
+                result = result + (char)tolower(s.at(i));
+            }
+            else {
+                result = result + s.at(i);
+            }
+        }
+        return result;
+    }
+
+    std::vector<std::string> splitStringByIndex(std::string s, int idx) {
+        int currIdx = 0;
+        std::vector<std::string> result;
+
+        while (currIdx < s.size()) {
+            if (currIdx + idx > s.size()) {
+                result.push_back(subString(s, currIdx, s.size()));
+                break;
+            }
+
+            result.push_back(subString(s, currIdx, currIdx + idx));
+            currIdx += idx;
+        }
+        return result;
+    }
+
 public:
     //printf("\033[3;47;35mTexting\033[0m\t\t");
     //static void italicsText(std::string text, bool addEndLine = true) {
@@ -91,6 +102,25 @@ public:
     //    }
     //    std::cout << "\033[0m"; // resets console colour
     //}
+
+    int colour2Num(std::string colour, bool isBackground = false) {
+        bool bright = colour.find("bright") != -1;
+        int foundIdx = findColour(replaceSubstr(colour, "bright ", ""), colours);
+        int result = 0;
+
+        if ((bright) && (foundIdx != -1)) {
+            result = foundIdx + 90;
+        }
+        else if (!(bright) && (foundIdx != -1)) {
+            result = foundIdx + 30;
+        }
+
+        if (isBackground) {
+            result += 10;
+        }
+
+        return result;
+    }
 
     void colourText(std::string colourName, std::string text, bool addEndLine = true) {
         int textColour = this->colour2Num(colourName);
@@ -123,7 +153,17 @@ public:
         int colour1Num = this->colour2Num(colour1);
         int colour2Num = this->colour2Num(colour2);
 
-        std::vector<std::string> colours = subVector(orderedColours, indexOf(colour1), indexOf(colour2));
+        std::vector<std::string> splitColours = subVector(orderedColours, indexOf(colour1), indexOf(colour2));
+        int coloursLen = splitColours.size();
+        std::vector<std::string> splitText = splitStringByIndex(text, round(textLen / coloursLen));
+
+        for (int i = 0; i < splitColours.size(); i++) {
+            colourText(splitColours[i], splitText[i], false);
+        }
+
+        if (splitText.size() > coloursLen) {
+            colourText(splitColours[coloursLen - 1], splitText[splitText.size()-1], false);
+        }
     }
 
     std::vector<std::string> getOrderedColours() {
