@@ -3,7 +3,7 @@ I've complied a handful of C++ classes for many issues you may face in your codi
 
 - Better strings
 - Dictionaries (inspired by Python)
-- Queues
+- Console Styling
 
 ...and many more!
 
