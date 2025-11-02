@@ -82,6 +82,23 @@ private:
 		return result;
 	}
 
+	int findElementChar(vector<char> arr, char c) {
+		for (int i = 0; i < arr.size(); i++) {
+			if (c == arr[i]) {
+				return i;
+			}
+		}
+		return -1;
+	}
+
+	vector<char> reverseVector(vector<char> arr) {
+		vector<char> result;
+		for (int i = arr.size() - 1; i > -1; i--) {
+			result.push_back(arr[i]);
+		}
+		return result;
+	}
+
 public:
 	string int2Binary(int n) {
 		int tempNum = n;
@@ -132,7 +149,7 @@ public:
 			if (each.size() < numEach) {
 				string newEach = repeatUntilAmount(each, '0', numEach);
 				result += ascii2Char(bin2Int(newEach) + key);
-				result += repeatStr('=', (numEach - each.size())/2);
+				result += repeatStr('=', (numEach - each.size()) / 2);
 			}
 			else {
 				result += ascii2Char(bin2Int(each) + key);
@@ -144,6 +161,47 @@ public:
 
 	string base64Decode(string s, int key = 0) {
 		string result;
+		string binaryStuff;
+
+		for (int i = 0; i < s.size(); i++) {
+			char current = (char)s[i];
+
+			if (current != '=') {
+				int foundIdx = findElementChar(base64alphabet, current);
+				string binValue = int2Binary(foundIdx);
+				binaryStuff += subString(binValue, 2, binValue.size());
+			}
+		}
+
+		int numEach = 8;
+		vector<string> splitBinary = splitStringByIndex(binaryStuff, numEach);
+
+		for (string each : splitBinary) {
+			int idx = (bin2Int(each) - key) - 32;
+			if (each.size() < numEach) {
+				string newEach = repeatUntilAmount(each, '0', numEach);
+
+				char c = char2ASCIILookup[idx];
+				if (islower(c)) {
+					result += char2ASCIILookup[idx - 1];
+				}
+				else {
+					result += c;
+				}
+			}
+			else {
+				int idx = (bin2Int(each) - key) - 32;
+
+				char c = char2ASCIILookup[idx];
+				if (islower(c)) {
+					result += char2ASCIILookup[idx - 1];
+				}
+				else {
+					result += c;
+				}
+			}
+		}
+
 		return result;
 	}
 };
