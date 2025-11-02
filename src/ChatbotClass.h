@@ -10,6 +10,7 @@ class Chatbot {
 		StrVecDictionary allResponses;
 		StrStrDictionary substitutions;
 		vector<string> userInputs;
+		string name;
 
 		vector<int> findAllOccurences(vector<string> arr, string query) {
 			vector<int> result;
@@ -123,7 +124,7 @@ class Chatbot {
 
 		string removePunctuation(string s) {
 			string result = s;
-			vector<string> punct = { "/", ",", "!", "?" };
+			vector<string> punct = { "/", ",", "!", "?", ">", "<" };
 
 			for (string oldSubStr : punct) {
 				result = replaceSubstr(result, oldSubStr, "");
@@ -296,26 +297,40 @@ class Chatbot {
 		}
 
 	public:
-		Chatbot(bool addDefaultPairs = true) {
+		Chatbot(string nameUser = "", bool addDefaultPairs = true, bool addDefaultSubs = true) {
+			if (nameUser == "") {
+				name = "User";
+			}
+			else {
+				name = nameUser;
+			}
+			
 			if (addDefaultPairs) {
 				// default pairs
+				this->addUserChatPair("hello", { "Hello, user!", "Hi user! Great to chat with you." });
 				this->addUserChatPair("exit", { "Goodbye for now!" });
 				this->addUserChatPair("hello bot", { "Hello, user!" });
-				this->addUserChatPair("who are you", { "I'm a simple chatbot, that doesn't use AI, who is here to chat!" });
-				this->addUserChatPair("how are you", { "I'm a chatbot, so I don't necessarily have feelings. But for you, I'm feeling good!" });
+				this->addUserChatPair("who are you", { "I'm a simple chatbot, that doesn't use AI, who is here to chat!", "Just call me Bot. I'm just here to relax and chat with you!" });
+				this->addUserChatPair("how are you", { "I'm a chatbot, so I don't necessarily have feelings. But for you, I'm feeling good!", "I don't have feelings, but for you, I feel great! How are you?" });
 				this->addUserChatPair("i don't know what to talk about", { "That's okay, let's talk about you! What's your name?" });
+			}
 
+			if (addDefaultSubs) {
 				// default substitutions
 				this->addSubstitution("hi", "hello");
+				this->addSubstitution("hey", "hello");
 				this->addSubstitution("who're", "who are");
 				this->addSubstitution("what's", "what is");
 				this->addSubstitution("name's", "name is");
+				this->addSubstitution("how're", "how are");
 				this->addSubstitution("fav", "favourite");
 				this->addSubstitution("color", "colour");
 				this->addSubstitution(" u", " you");
 				this->addSubstitution("you alright", "how are you");
 				this->addSubstitution("you okay", "how are you");
 				this->addSubstitution("i'm not sure", "i don't know");
+				this->addSubstitution("thanks", "thank you");
+				this->addSubstitution("chat", "talk");
 			}
 		}
 
@@ -332,7 +347,7 @@ class Chatbot {
 			substitutions.removeKeyValue(oldStr);
 		}
 
-		// example: addUserChatPair("* apples *", "I love apples they're cool")
+		// example: addUserChatPair("* apples *", {"I love apples they're cool"})
 		void addUserChatPair(string msgPattern, vector<string> botMsg) {
 			allResponses.addKeyValue(msgPattern, botMsg);
 		}
@@ -346,6 +361,12 @@ class Chatbot {
 			allResponses.addKeyValue(msgPattern, newBotMsg);
 		}
 
+		void setStrVariable(string varName, string value) {
+			if (varName == "name") {
+				name = value;
+			}
+		}
+
 		void talkWithBot() {
 			cout << "Talking with Bot. Type 'exit' to leave chat." << endl;
 			cout << "============================================" << endl;
@@ -354,7 +375,7 @@ class Chatbot {
 			string userMsg;
 			while (userMsg != "exit") {
 				cout << "----------------------" << endl;
-				cout << "User: ";
+				cout << name << ": ";
 				getline(cin >> ws, userMsg);
 				cout << "----------------------" << endl;
 
