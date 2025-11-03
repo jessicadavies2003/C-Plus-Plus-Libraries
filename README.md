@@ -43,7 +43,6 @@ int main() {
 	return 0;
 }
 ```
-<!-- <img src="GitHub-Imgs/usage-1-code.png" width="400"/> -->
 
 Output:
 
@@ -52,11 +51,46 @@ Output:
 ### Example 2
 A demonstration of the Chatbot class:
 
-<img src="GitHub-Imgs/usage-2-code.png" width="500"/>
+```
+#include <vector>
+#include <string>
+#include "ChatbotClass.h"
+using namespace std;
+
+int main() {
+	Chatbot bot;
+
+	// setting bot variables
+	bot.setStrVariable("username", "Jessica");
+	bot.setStrVariable("favcolour", "red");
+
+	// custom bot behaviour
+	bot.addUserChatPair("what is your favourite colour", { "Hmmm... I like <favcolour>. What about you?" });
+	bot.addUserChatPair("i like *", { "That's cool! I like red, apples and bananas." });
+	bot.addUserChatPair("my name is *", { "Nice to meet you, <star1>! You can call me <botname>." });
+	bot.addUserChatPair("thank you", { "You're welcome, <username>! Would you like to talk about something else?", "No problem, happy to help!", "No problem, is there anything else I can help with, <username>?" });
+	bot.addUserChatPair("do you like *", { "Yes, I do like <star1>!", "Not really. Let's talk about something else." });
+	bot.addUserChatPair("my favourite colour is *", { "Ooo, <star1> is a lovely colour." });
+	bot.addUserChatPair("i have a question", { "Go ahead, <username>.", "What's your question?", "Of course, go ahead <username>!" });
+
+	// begin chat
+	bot.talkWithBot();
+
+	return 0;
+}
+```
 
 Output:
 
 <img src="GitHub-Imgs/usage-2-output.png" width="400"/>
+
+## Issues
+If you have any feedback regarding these classes, there are many ways to submit it.
+
+- Via Email.
+- Via the Issues section of this repository.
+
+Find which one you'd prefer and get your feedback heard!
 
 ## Creator's Portfolio
 https://jessicadavies2003.github.io/
