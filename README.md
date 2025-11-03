@@ -19,7 +19,31 @@ It's a simple process to get these classes up and running in your own code!
 ### Example 1
 A demonstration of the Console Styling class:
 
-<img src="GitHub-Imgs/usage-1-code.png" width="400"/>
+```
+#include <vector>
+#include <iostream>
+#include "ConsoleClass.h"
+using namespace std;
+
+int main() {
+	Console c;
+
+    c.colourBGOfTxt("green", "white", "Hello world.");
+    cout << "================================" << endl;
+
+	vector<string> orderedColours = c.getOrderedColours();
+	for (string colour : orderedColours) {
+        /*cout << "current colour: " << colour << endl;*/
+		c.colourText(colour, "Hello world!");
+	}
+
+    cout << "================================" << endl;
+    c.textGradient("text gradients!!", "red", "green");
+
+	return 0;
+}
+```
+<!-- <img src="GitHub-Imgs/usage-1-code.png" width="400"/> -->
 
 Output:
 
