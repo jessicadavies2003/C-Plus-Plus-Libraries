@@ -13,11 +13,11 @@ private:
 	int char2ASCII(char a) {
 		// start at idx 32		
 		for (int i = 0; i < char2ASCIILookup.size(); i++) {
-			if (char2ASCIILookup[i] == a && isupper(a)) {
-				return i + 32;
+			if (char2ASCIILookup[i] == a || isupper(a)) {
+				return a;
 			}
 			else if (char2ASCIILookup[i] == a && islower(a)) {
-				return i + 33;
+				return a + 1;
 			}
 		}
 
@@ -150,6 +150,7 @@ public:
 				string newEach = repeatUntilAmount(each, '0', numEach);
 				result += ascii2Char(bin2Int(newEach) + key);
 				result += repeatStr('=', (numEach - each.size()) / 2);
+				break;
 			}
 			else {
 				result += ascii2Char(bin2Int(each) + key);
@@ -182,16 +183,18 @@ public:
 		for (string each : splitBinary) {
 			int idx = (bin2Int(each) - key) - 32;
 
-			if (each.size() < numEach) {
+			if ((each.size() < numEach) || (idx < 0)) {
 				break;
 			}
 
-			char c = char2ASCIILookup[idx];
-			if (islower(c)) {
+			if (islower(char2ASCIILookup[idx])) {
 				result += char2ASCIILookup[idx - 1];
+
+			} else if (isupper(char2ASCIILookup[idx])) {
+				result += char2ASCIILookup[idx];
 			}
 			else {
-				result += c;
+				result += char2ASCIILookup[idx + 2];
 			}
 		}
 
