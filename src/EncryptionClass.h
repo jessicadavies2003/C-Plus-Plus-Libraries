@@ -171,6 +171,9 @@ public:
 				string binValue = int2Binary(foundIdx);
 				binaryStuff += subString(binValue, 2, binValue.size());
 			}
+			else {
+				binaryStuff += "00";
+			}
 		}
 
 		int numEach = 8;
@@ -178,27 +181,17 @@ public:
 
 		for (string each : splitBinary) {
 			int idx = (bin2Int(each) - key) - 32;
-			if (each.size() < numEach) {
-				string newEach = repeatUntilAmount(each, '0', numEach);
 
-				char c = char2ASCIILookup[idx];
-				if (islower(c)) {
-					result += char2ASCIILookup[idx - 1];
-				}
-				else {
-					result += c;
-				}
+			if (each.size() < numEach) {
+				break;
+			}
+
+			char c = char2ASCIILookup[idx];
+			if (islower(c)) {
+				result += char2ASCIILookup[idx - 1];
 			}
 			else {
-				int idx = (bin2Int(each) - key) - 32;
-
-				char c = char2ASCIILookup[idx];
-				if (islower(c)) {
-					result += char2ASCIILookup[idx - 1];
-				}
-				else {
-					result += c;
-				}
+				result += c;
 			}
 		}
 
