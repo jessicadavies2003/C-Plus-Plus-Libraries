@@ -5,7 +5,7 @@
 #include <vector>
 #include <cmath>
 
-// a C++ class for styling text in a console.
+// a C++ class for styling text in a console. Including background colours, text gradients & more!
 class Console {
 private:
     std::vector<std::string> colours = { "black", "red", "green", "yellow", "blue", "magenta", "cyan", "white" };
@@ -92,16 +92,18 @@ private:
     }
 
 public:
-    //printf("\033[3;47;35mTexting\033[0m\t\t");
-    //static void italicsText(std::string text, bool addEndLine = true) {
-    //    if (addEndLine) {
-    //        std::cout << "\033[" << textColour << "m" << text << std::endl;
-    //    }
-    //    else {
-    //        std::cout << "\033[1;" << textColour << "m" << text;
-    //    }
-    //    std::cout << "\033[0m"; // resets console colour
-    //}
+    void italicsText(std::string text, std::string textColour = "white", std::string bgColour = "black", bool addEndLine = true) {
+        int colourNum = colour2Num(textColour);
+        int bgColourNum = colour2Num(bgColour, true);
+
+        if (addEndLine) {
+            std::cout << "\033[3;" << bgColourNum << ";" << colourNum << "m" << text << std::endl;
+        }
+        else {
+            std::cout << "\033[3;" << bgColourNum << ";" << colourNum << "m" << text;
+        }
+        std::cout << "\033[0m"; // resets console colour
+    }
 
     int colour2Num(std::string colour, bool isBackground = false) {
         bool bright = colour.find("bright") != -1;
@@ -148,7 +150,7 @@ public:
         std::cout << "\033[0m"; // resets console colour
     }
 
-    void textGradient(std::string text, std::string colour1, std::string colour2) {
+    void textGradient(std::string text, std::string colour1, std::string colour2, bool addEndLine = true) {
         int textLen = text.size();
         int colour1Num = this->colour2Num(colour1);
         int colour2Num = this->colour2Num(colour2);
@@ -162,7 +164,7 @@ public:
         }
 
         if (splitText.size() > coloursLen) {
-            colourText(splitColours[coloursLen - 1], splitText[splitText.size()-1], false);
+            colourText(splitColours[coloursLen - 1], splitText[splitText.size()-1], addEndLine);
         }
     }
 
