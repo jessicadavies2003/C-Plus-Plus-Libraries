@@ -4,7 +4,11 @@
 #include <vector>
 using namespace std;
 
-// a string class with more advanced functions for all your string needs! Including substrings, finding characters, and more.
+/*
+Inspired by Python's string methods, this string class with more advanced functions
+allows you to perform more complex tasks on your string, including substrings, finding
+characters, changing cases, reversing a string, and more!
+*/
 class BetterString {
 private:
 	string s;
