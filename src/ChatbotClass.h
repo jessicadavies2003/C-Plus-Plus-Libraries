@@ -5,6 +5,8 @@
 
 #include "DictionaryClass.h"
 
+// heavily inspired by Rivescript, this class allows you to build your own (NON-AI) chatbot,
+// as well as customise its behaviour & provide substitutions (such as "what's" becoming "what is")!
 class Chatbot {
 	private:
 		StrVecDictionary allResponses;
