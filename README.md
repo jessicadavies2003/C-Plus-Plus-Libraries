@@ -1,8 +1,9 @@
 # C++ Libraries for your Convenience!
 I've complied a handful of C++ classes for many issues you may face in your coding journey. Including:
 
-- Better strings
+- Better Strings
 - Dictionaries (inspired by Python)
+- Working with Time
 - Console Styling
 
 ...and many more!
