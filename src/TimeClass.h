@@ -79,12 +79,12 @@ private:
 	}
 
 public:
-	int storedYear;
-	int storedMonth;
-	int storedDate;
-	int storedHour;
-	int storedMinute;
-	int storedSeconds;
+	int storedYear = 0;
+	int storedMonth = 0;
+	int storedDate = 0;
+	int storedHour = 0;
+	int storedMinute = 0;
+	int storedSeconds = 0;
 
 	TimePlusPlus(int seconds) {
 		time_t t = seconds;
@@ -103,30 +103,27 @@ public:
 		timeInSeconds = (int)timeObj;
 	}
 
-	time_t dateToTimeObj(int year, int month, int day, int hour = 0, int minute = 0, int seconds = 0) {
-		int numSeconds = 0;
+	/*
+Parameters:
+- (int) year - 
+- (int) month -
+- (int) day -
+- (int) hour - A specific hour in the 24-hour format
+- (int) minute -
+- (int) seconds - 
+	*/
+	time_t makeDate(int year, int month, int day, int hour = 0, int minute = 0, int seconds = 0) {
+		struct tm tm = { 0 };
 
-		// years
-		for (int i = 1970; i < year + 1; i++) {
-			if (i % 4 == 0) {
-				numSeconds += (86400 * 366);
-			}
-			else {
-				numSeconds += (86400 * 365);
-			}
-		}
+		tm.tm_hour = hour;
+		tm.tm_min = minute;
+		tm.tm_sec = seconds;
+		tm.tm_year = year - 1900;
+		tm.tm_mon = month - 1;
+		tm.tm_mday = day;
 
-		// months
-		//numSeconds += (numDays[month-1] * 86400);
-
-		// days
-		//numSeconds += (day * 86400);
-
-		// hrs, mins, seconds
-		numSeconds += (seconds + (minute * 60) + (minute * (60 * 60)));
-
-		time_t t = numSeconds;
-		return t;
+		tm.tm_isdst = -1;
+		return mktime(&tm);
 	}
 
 	TimePlusPlus(int year, int month, int day, int hour = 0, int minute = 0, int seconds = 0) {
@@ -137,7 +134,7 @@ public:
 		storedMinute = minute;
 		storedSeconds = seconds;
 		
-		timeObj = dateToTimeObj(year, month, day, hour, minute, seconds);
+		timeObj = makeDate(year, month, day, hour, minute, seconds);
 		timeInSeconds = (int)timeObj;
 	}
 
