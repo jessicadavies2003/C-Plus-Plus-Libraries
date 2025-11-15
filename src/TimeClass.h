@@ -14,70 +14,6 @@ private:
 	int timeInSeconds; // since Jan 1 1970 00:00
 	int startingYear = 1970;
 
-	int numYears2Seconds(int numYears, int leapYearStartIdx = 3) {
-		if (numYears == 1) {
-			return (86400 * 365);
-		}
-
-		int result = 0;
-		std::vector<int> daysPerYear;
-
-		int idx = 0;
-		for (int i = 4; i < numYears + 1; i++) {
-			idx = i + leapYearStartIdx + 1;
-
-			if (idx % 4 == 0) {
-				result += (86400 * 366);
-				daysPerYear.push_back(366);
-			}
-			else {
-				result += (86400 * 365);
-				daysPerYear.push_back(365);
-			}
-
-			//displayIntVector(daysPerYear);
-			//std::cout << "=================================" << std::endl;
-		}
-
-		return result;
-	}
-
-	std::vector<int> findSubStrings(std::string s, std::string sub) {
-		std::vector<int> allOccurences;
-		std::string temp = s;
-
-		while (temp.find(sub) != -1) {
-			int idx = temp.find(sub);
-			allOccurences.push_back(temp.find(sub));
-			temp.erase(idx, sub.size());
-		}
-
-		return allOccurences;
-	}
-
-	// replaces a substring with a new substring.
-	std::string replaceSubstr(std::string s, std::string oldSubStr, std::string newSubStr) {
-		std::vector<int> allOccurences = findSubStrings(s, oldSubStr);
-		std::string result = s;
-		int len = oldSubStr.size();
-
-		for (int index : allOccurences) {
-			result.replace(index, len, newSubStr);
-		}
-
-		return result;
-	}
-
-	std::vector<int> getLeapYears(int year1, int year2) {
-		std::vector<int> leapYears;
-		for (int i = year1; i < year2 + 1; i++) {
-			if (i % 4 == 0) {
-				leapYears.push_back(i);
-			}
-		}
-		return leapYears;
-	}
-
 public:
 	int storedYear = 0;
 	int storedMonth = 0;
@@ -163,33 +99,6 @@ Parameters:
 		}
 
 		return formatted;
-	}
-
-	int year2Seconds(int year) {
-		std::vector<int> fourYears = { year, year + 1, year + 2, year + 3 };
-
-		// checks for a leap year
-		for (int i = 0; i < fourYears.size(); i++) {
-			if (fourYears[i] % 4 == 0) {
-				return numYears2Seconds(year - startingYear, i);
-			}
-		}
-	}
-
-	float secondsToYear(int seconds) {
-		int temp = seconds;
-		int numYears = startingYear;
-
-		while (temp > 0) {
-			if (temp % 31536000 == 0) {
-				numYears++;
-			}
-
-			temp -= 86400;
-			//std::cout << temp << std::endl;
-		}
-
-		return numYears;
 	}
 
 	bool operator>(TimePlusPlus dateObj) {
