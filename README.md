@@ -7,16 +7,6 @@ I've complied a handful of C++ classes for many issues you may face in your codi
 
 ...and many more!
 
-## Help Requests from Me!
-I need some help with the `TimeClass.h` class. Specifically, the `dateToTimeObj` function.
-The function returns an `int` value of the duration (in seconds) between Jan 1 1970, and the date/time provided. I'm using Jan 1 1970 as I'm working with the `<ctime>` library & `time_t`.
-If you'd like to help, but unsure about the `<ctime>` library & `time_t`, check out these docs: https://en.cppreference.com/w/cpp/chrono/c/time.html
-
-My observations:
-- `time_t` does not include leap years, so that could be one reason for it not working.
-
-Any help would be greatly appreciated!
-
 ## How to Use
 It's a simple process to get these classes up and running in your own code!
 1. In VS2022 (or later), create a new empty C++ project.
