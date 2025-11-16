@@ -7,9 +7,6 @@
 // a c++ library for all things time related.
 class TimePlusPlus {
 private:
-	std::vector<std::string> months = { "Jan", "Feb", "Mar", "Apr", "May", "June", "July", "Aug", "Sep", "Oct", "Nov", "Dec" };
-	std::vector<int> numDays = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
-
 	time_t timeObj;
 	int timeInSeconds; // since Jan 1 1970 00:00
 	int startingYear = 1970;
@@ -39,15 +36,18 @@ public:
 		timeInSeconds = (int)timeObj;
 	}
 
-	/*
-Parameters:
-- (int) year - 
-- (int) month -
-- (int) day -
-- (int) hour - A specific hour in the 24-hour format
-- (int) minute -
-- (int) seconds - 
-	*/
+	TimePlusPlus(int year, int month, int day, int hour = 0, int minute = 0, int seconds = 0) {
+		storedYear = year;
+		storedMonth = month;
+		storedDate = day;
+		storedHour = hour;
+		storedMinute = minute;
+		storedSeconds = seconds;
+
+		timeObj = makeDate(year, month, day, hour, minute, seconds);
+		timeInSeconds = (int)timeObj;
+	}
+
 	time_t makeDate(int year, int month, int day, int hour = 0, int minute = 0, int seconds = 0) {
 		struct tm tm = { 0 };
 
@@ -62,36 +62,31 @@ Parameters:
 		return mktime(&tm);
 	}
 
-	TimePlusPlus(int year, int month, int day, int hour = 0, int minute = 0, int seconds = 0) {
-		storedYear = year;
-		storedMonth = month;
-		storedDate = day;
-		storedHour = hour;
-		storedMinute = minute;
-		storedSeconds = seconds;
-		
-		timeObj = makeDate(year, month, day, hour, minute, seconds);
-		timeInSeconds = (int)timeObj;
+	tm timetToTmStruct(time_t obj) {
+		struct tm date;
+		gmtime_s(&date, &timeObj); // stores time info about `timeObj` into `date`.
+		return date;
 	}
 
-	int timetObjToSeconds() {
+	int toSeconds() {
 		return timeInSeconds;
 	}
 
-	time_t secondsToTimetObj() {
+	time_t toTimeTObj() {
 		return timeObj;
 	}
 
-	time_t secondsToTimetObj_defineSeconds(int seconds) {
+	time_t toTimeTObj_defineSeconds(int seconds) {
 		time_t myT = seconds;
 		return myT;
 	}
 
 	std::string formatDate() {
-		const int strSize = 26;
-
+		const int strSize = 25;
+		struct tm date;
 		char chars[strSize];
-		asctime_s(chars, strSize, gmtime(&timeObj));
+		gmtime_s(&date, &timeObj); // stores time info about `timeObj` into `date`.
+		strftime(chars, strSize, "%a %b %d %H:%M:%S %Y", &date);
 
 		std::string formatted;
 		for (int i = 0; i < strSize; i++) {
@@ -102,18 +97,18 @@ Parameters:
 	}
 
 	bool operator>(TimePlusPlus dateObj) {
-		return (this->timetObjToSeconds() > dateObj.timetObjToSeconds());
+		return (this->toSeconds() > dateObj.toSeconds());
 	}
 
 	int calculateDurationInSeconds(TimePlusPlus dateObj) {
 		int calculatedSeconds;
-		TimePlusPlus &currTimeObj = *this;
+		TimePlusPlus& currTimeObj = *this;
 
 		if (currTimeObj > dateObj) {
-			calculatedSeconds = (currTimeObj.timetObjToSeconds() - dateObj.timetObjToSeconds());
+			calculatedSeconds = (currTimeObj.toSeconds() - dateObj.toSeconds());
 		}
 		else {
-			calculatedSeconds = (dateObj.timetObjToSeconds() - currTimeObj.timetObjToSeconds());
+			calculatedSeconds = (dateObj.toSeconds() - currTimeObj.toSeconds());
 		}
 
 		return calculatedSeconds;
