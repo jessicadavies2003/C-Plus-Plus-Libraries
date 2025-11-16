@@ -4,7 +4,10 @@
 #include <vector>
 #include <ctime>
 
-// a c++ library for all things time related.
+/*
+This C++ time library makes working with `time_t` much easier, as well
+as being able to format the date into a readable format!
+*/
 class TimePlusPlus {
 private:
 	time_t timeObj;
@@ -19,15 +22,15 @@ public:
 	int storedMinute = 0;
 	int storedSeconds = 0;
 
-	TimePlusPlus(int seconds) {
-		time_t t = seconds;
-		timeObj = t;
-		timeInSeconds = (int)timeObj;
-	}
+	TimePlusPlus(int seconds = 0) {
+		if (seconds == 0) {
+			timeObj = time(NULL);
+		}
+		else {
+			time_t t = seconds;
+			timeObj = t;
+		}
 
-	// stores the current time
-	TimePlusPlus() {
-		timeObj = time(NULL);
 		timeInSeconds = (int)timeObj;
 	}
 
