@@ -47,7 +47,7 @@ private:
 
     std::vector<std::string> subVector(std::vector<std::string> arr, int startIdx, int endIdx) {
         std::vector<std::string> result;
-        for (int i = startIdx; i < endIdx+1; i++) {
+        for (int i = startIdx; i < endIdx + 1; i++) {
             result.push_back(arr[i]);
         }
         return result;
@@ -164,7 +164,7 @@ public:
         }
 
         if (splitText.size() > coloursLen) {
-            colourText(splitColours[coloursLen - 1], splitText[splitText.size()-1], addEndLine);
+            colourText(splitColours[coloursLen - 1], splitText[splitText.size() - 1], addEndLine);
         }
     }
 
