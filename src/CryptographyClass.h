@@ -1,6 +1,8 @@
 #include <vector>
 #include <string>
 #include <cmath>
+#include <iostream>
+
 using namespace std;
 
 /*
@@ -8,7 +10,7 @@ A C++ library that gives you access to various encoding methods.
 */
 class Cryptography {
 private:
-	vector<char> char2ASCIILookup = { ' ', '!', '"', '#', '$', ' ', '%', ' ', '&', '\'', '(', ')', '*', '+', ',', '-', '.', '/', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', ':', ';', '<', '?', '@', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '[', ']', '^', '_', '`', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '{', '|', '}', '~', };
+	vector<char> char2ASCIILookup = { ' ', '!', '"', '#', '$', '%', '&', '\'', '(', ')', '*', '+', ',', '-', '.', '/', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', ':', ';', '<', '=', '>', '?', '@', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '[', '\\', ']', '^', '_', '`', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '{', '|', '}', '~'};
 	vector<char> base64alphabet = { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '+', '/' };
 	vector<int> nums = { (int)pow(2, 7) , (int)pow(2, 6), (int)pow(2, 5), (int)pow(2, 4), (int)pow(2, 3), (int)pow(2, 2), (int)pow(2, 1), (int)pow(2, 0) };
 
@@ -16,11 +18,9 @@ private:
 	int char2ASCII(char a) {
 		// start at idx 32		
 		for (int i = 0; i < char2ASCIILookup.size(); i++) {
-			if (char2ASCIILookup[i] == a || isupper(a)) {
+			char c = char2ASCIILookup[i];
+			if (c == a) {
 				return a;
-			}
-			else if (char2ASCIILookup[i] == a && islower(a)) {
-				return a + 1;
 			}
 		}
 
@@ -102,6 +102,23 @@ private:
 		return result;
 	}
 
+	bool hasDigits(std::string str) {
+		std::vector<std::string> digits = { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9" };
+		for (std::string digit : digits) {
+			if (str.find(digit) != -1) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	// returns true if the given character is a special character.
+	bool isSpecialChar(char c) {
+		//std::vector<std::string> chars = { "~", "}", "{", "@", ")", "(", "*", "&", "^", "%", "?", "!", "£", "\"" };
+		std::string chars = ".~}{@/)!?(*&^%£\"";
+		return chars.find(c) != -1;
+	}
+
 public:
 	string int2Binary(int n) {
 		int tempNum = n;
@@ -143,12 +160,14 @@ public:
 
 		for (int i = 0; i < s.size(); i++) {
 			char current = (char)s[i];
+			//std::cout << "current char: " << current << std::endl;
 			binaryStuff += int2Binary(char2ASCII(current));
 		}
 
 		int numEach = 6;
 		vector<string> splitBinary = splitStringByIndex(binaryStuff, numEach);
 		for (string each : splitBinary) {
+
 			if (each.size() < numEach) {
 				string newEach = repeatUntilAmount(each, '0', numEach);
 				result += ascii2Char(bin2Int(newEach) + key);
@@ -172,7 +191,7 @@ public:
 
 			if (current != '=') {
 				int foundIdx = findElementChar(base64alphabet, current);
-				string binValue = int2Binary(foundIdx);
+				string binValue = int2Binary(foundIdx - key);
 				binaryStuff += subString(binValue, 2, binValue.size());
 			}
 			else {
@@ -184,21 +203,14 @@ public:
 		vector<string> splitBinary = splitStringByIndex(binaryStuff, numEach);
 
 		for (string each : splitBinary) {
-			int idx = (bin2Int(each) - key) - 32;
+			int idx = bin2Int(each) - 32;
 
 			if ((each.size() < numEach) || (idx < 0)) {
 				break;
 			}
 
-			if (islower(char2ASCIILookup[idx])) {
-				result += char2ASCIILookup[idx - 1];
-
-			} else if (isupper(char2ASCIILookup[idx])) {
-				result += char2ASCIILookup[idx];
-			}
-			else {
-				result += char2ASCIILookup[idx + 2];
-			}
+			char c = char2ASCIILookup[idx];
+			result += c;
 		}
 
 		return result;
