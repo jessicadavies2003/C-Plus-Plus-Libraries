@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <iostream>
 #include <vector>
 using namespace std;
 
@@ -20,14 +21,51 @@ public:
 		length = s.size();
 	}
 
-	// returns a vector with `str` as the only element if `sep` isn't found in `str`. Default seperator is " ".
-	vector<string> split(string sep = " ") {
+	// operators //
+
+	void operator=(std::string e) {
+		s = e;
+	}
+
+	void operator+=(std::string append) {
+		s += append;
+	}
+
+	void operator+=(char c) {
+		s += c;
+	}
+
+	// converts the BetterString object back to a regular string.
+	string toString() {
+		return s;
+	}
+
+	// Returns true or false, depending on if the substring is found.
+	bool contains(std::string subStr) {
+		return (s.find(subStr) != -1);
+	}
+
+	// finds and returns the index of the last occurence of a character.
+	int findLast(char c) {
+		for (int i = s.size(); i > 0; i--) {
+			if (s.at(i) == c) {
+				return i;
+			}
+		}
+		return -1;
+	}
+
+	/*
+	Splits the string into a vector of BetterString objects at a given seperator
+	Returns a vector with `str` as the only element if `sep` isn't found in the string. Default seperator is " ".
+	*/
+	vector<BetterString> split(string sep = " ") {
 		if (s.find(sep) == -1) {
 			return { s };
 		}
 
 		string currStr = s;
-		vector<string> result = {};
+		vector<BetterString> result = {};
 		int foundIdx = 0;
 
 		while (foundIdx != -1) {
@@ -147,13 +185,15 @@ public:
 
 	// checks if the string has whitespace
 	bool hasWhitespace() {
-		for (int i = 0; i < s.size(); i++) {
+		/*for (int i = 0; i < s.size(); i++) {
 			cout << s[i] << endl;
 			if (s[i] == ' ') {
 				return true;
 			}
 		}
-		return false;
+		return false;*/
+
+		return split().size() > 1;
 	}
 
 	// checks if a string contains digits
@@ -168,9 +208,9 @@ public:
 	}
 
 	// splits a string at every given index and returns a vector. Adds anything left over.
-	vector<string> splitStringByIndex(int idx) {
+	vector<BetterString> splitStringByIndex(int idx) {
 		int currIdx = 0;
-		vector<string> result;
+		vector<BetterString> result;
 
 		while (currIdx < s.size()) {
 			if (currIdx + idx > s.size()) {
@@ -185,38 +225,49 @@ public:
 	}
 
 	// Adds char `a` until the length of the string reaches `len`.
-	string repeatUntilAmount(char a, int len) {
-		string result = s;
-		while (result.size() != len) {
+	BetterString repeatUntilAmount(char a, int len) {
+		BetterString result = s;
+		while (result.length != len) {
 			result += a;
 		}
 		return result;
 	}
 
-    /// finds a given substring in the string, or an empty vector if not found.
-    vector<int> findSubStrings(string sub) {
-        vector<int> allOccurences;
-        string temp = s;
+	/// finds a given substring in the string, or an empty vector if not found.
+	vector<int> findSubStrings(string sub) {
+		vector<int> allOccurences;
+		string temp = s;
 
-        while (temp.find(sub) != -1) {
-            int idx = temp.find(sub);
-            allOccurences.push_back(temp.find(sub));
-            temp.erase(idx, sub.size());
-        }
+		while (temp.find(sub) != -1) {
+			int idx = temp.find(sub);
+			allOccurences.push_back(temp.find(sub));
+			temp.erase(idx, sub.size());
+		}
 
-        return allOccurences;
-    }
+		return allOccurences;
+	}
 
-    // replaces a substring with a new substring.
-    string replaceSubstr(string oldSubStr, string newSubStr) {
-        vector<int> allOccurences = findSubStrings(s, oldSubStr);
-        string result = s;
-        int len = oldSubStr.size();
+	// replaces a substring with a new substring externally (ext)
+	BetterString replaceSubStr_Ext(string oldSubStr, string newSubStr) {
+		vector<int> allOccurences = findSubStrings(oldSubStr);
+		string result = s;
+		int len = oldSubStr.size();
 
-        for (int index : allOccurences) {
-            result.replace(index, len, newSubStr);
-        }
+		for (int index : allOccurences) {
+			result.replace(index, len, newSubStr);
+		}
 
-        return result;
-    }
+
+		return BetterString(result);
+	}
+
+	// replaces a substring with a new substring internally (in)
+	void replaceSubStr_In(string oldSubStr, string newSubStr) {
+		vector<int> allOccurences = findSubStrings(oldSubStr);
+		int len = oldSubStr.size();
+
+		for (int index : allOccurences) {
+			s = s.replace(index, len, newSubStr);
+		}
+	}
 };
